@@ -1,4 +1,5 @@
 # app/routes/chat.py
+# Handles chat requests across all documents using OpenAI's chat completion API.
 
 from fastapi import APIRouter, Request, HTTPException
 from fastapi.responses import StreamingResponse
