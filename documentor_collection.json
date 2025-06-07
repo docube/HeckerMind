@@ -1,0 +1,51 @@
+{
+    "info": {
+      "name": "Documentor API",
+      "description": "Postman collection for testing the Documentor project APIs (upload, ping).",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "_postman_id": "e01b02a7-53c1-4c57-9f91-0f5e4fb60af5"
+    },
+    "item": [
+      {
+        "name": "Ping API",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "http://127.0.0.1:8000/api/ping",
+            "protocol": "http",
+            "host": ["127.0.0.1"],
+            "port": "8000",
+            "path": ["api", "ping"]
+          }
+        },
+        "response": []
+      },
+      {
+        "name": "Upload Document",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "formdata",
+            "formdata": [
+              {
+                "key": "files",
+                "type": "file",
+                "src": ""
+              }
+            ]
+          },
+          "url": {
+            "raw": "http://127.0.0.1:8000/api/upload",
+            "protocol": "http",
+            "host": ["127.0.0.1"],
+            "port": "8000",
+            "path": ["api", "upload"]
+          }
+        },
+        "response": []
+      }
+    ]
+  }
+  
