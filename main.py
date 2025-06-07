@@ -1,4 +1,6 @@
 # main.py
+# This file is part of the FastAPI application that serves as the entry point for the API.
+# It includes the necessary imports, sets up the FastAPI app, and includes routers for different functionalities.
 
 from fastapi import FastAPI
 from app.api.upload import router as upload_router
