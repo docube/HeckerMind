@@ -16,7 +16,7 @@ function App() {
       <div className="app">
         <header className="header">
           <img src={logo} alt="DocuMentor Logo" className="logo" />
-          <h1>DocuMentor</h1>
+          <h1>HeckerMind</h1>
           <DarkModeToggle />
         </header>
 

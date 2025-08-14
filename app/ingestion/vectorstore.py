@@ -1,13 +1,18 @@
 # app/ingestion/vectorstore.py
 
 import os
+import pickle
+import numpy as np
+import faiss
 from typing import List
+from pydantic import SecretStr
+from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from app.config.settings import get_settings
-import faiss
-import pickle
-import numpy as np
+
+# Load environment variables early
+load_dotenv()
 
 settings = get_settings()
 
@@ -15,7 +20,19 @@ class VectorStoreManager:
     def __init__(self, base_path: str = "vectorstore/"):
         self.base_path = base_path
         os.makedirs(self.base_path, exist_ok=True)
-        self.embedding_model = OpenAIEmbeddings(api_key=settings.OPENAI_API_KEY)
+
+        # Ensure API key is available
+        api_key = settings.OPENAI_API_KEY or os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "❌ OPENAI_API_KEY is missing. Please set it in your .env file or environment variables."
+            )
+
+        # Pass as SecretStr to match new pydantic typing
+        self.embedding_model = OpenAIEmbeddings(
+            api_key=SecretStr(api_key),
+            model="text-embedding-3-small"  # Modern default model
+        )
 
     def save_vectorstore(self, embeddings: List[List[float]], texts: List[str], document_name: str):
         if not embeddings or not texts:
@@ -29,7 +46,6 @@ class VectorStoreManager:
         index = faiss.IndexFlatL2(dim)
         index.add(vectors)
 
-        os.makedirs(self.base_path, exist_ok=True)
         doc_folder = os.path.join(self.base_path, document_name)
         os.makedirs(doc_folder, exist_ok=True)
 
@@ -38,6 +54,7 @@ class VectorStoreManager:
 
         faiss.write_index(index, index_path)
         print(f"[VERIFY] FAISS index file exists: {os.path.exists(index_path)}")
+        
         with open(metadata_path, "wb") as f:
             pickle.dump(texts, f)
 
